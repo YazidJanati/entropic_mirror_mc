@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/emc.iml" filepath="$PROJECT_DIR$/.idea/emc.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/entropic_mirror_mc.iml" filepath="$PROJECT_DIR$/.idea/entropic_mirror_mc.iml" />
     </modules>
   </component>
 </project>
