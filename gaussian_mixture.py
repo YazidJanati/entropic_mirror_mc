@@ -18,8 +18,9 @@ Jax implementation of the Expectation-Maximization algorithm.
 """
 
 class Gaussian_Mixture(NamedTuple):
+    dim: int
     n_components: int
-    params: jnp.ndarray
+    params: jnp.ndarray = None
 
 def _precision_chol(covs):
     n_comp, dim = covs.shape[0], covs.shape[-1]
@@ -100,10 +101,13 @@ def train(samples, init_params, n_components, key=None, eps=1e-3, max_iter=100):
     return means, covs, log_weights
 
 
-def tomixture(means, covs, weights):
-    cat = Categorical(weights)
+def params_to_gm(means, covs, log_weights):
+    cat = Categorical(logits=log_weights)
     norm = MultivariateNormal(means, covs)
     return MixtureSameFamily(cat, norm)
+
+def gm_to_params(distr):
+    pass
 
 
 def assign(points, centroids):
