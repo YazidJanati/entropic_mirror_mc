@@ -16,7 +16,7 @@ class MCMC_kernel(NamedTuple):
 
 
 def emc(key, logpdf, n_train, n_samples, model, global_kernel, local_kernel, n_chains, heavy_distr,
-        mixed_proposal_weights=jnp.ndarray([.8, .2])):
+        mixed_proposal_weights=jnp.array([.8, .2])):
     key_train, key_init_proposal = split(key, 2)
     if isinstance(model, Gaussian_Mixture):
         key_means, key_covs, key_log_weights = split(key_init_proposal, 3)
@@ -27,6 +27,7 @@ def emc(key, logpdf, n_train, n_samples, model, global_kernel, local_kernel, n_c
         def train_func(key, samples):
             params = train_gm(samples=samples, init_params="kmeans", n_components=model.n_components, key=key)
             return params_to_gm(*params)
+
     keys = split(key_train, n_train)
     partial_emc_step = partial(emc_step, key=keys, n_samples=n_samples, logpdf=logpdf, global_kernel=global_kernel,
                                local_kernel=local_kernel,
@@ -38,10 +39,14 @@ def emc(key, logpdf, n_train, n_samples, model, global_kernel, local_kernel, n_c
 def emc_step(i, key, n_samples, logpdf, proposal, global_kernel, local_kernel, train_func, heavy_distr,
              mixed_proposal_weights):
     key_empirical, key_resample, key_lker = split(key[i], 3)
-    mixed_proposal = MixtureGeneral(Categorical(mixed_proposal_weights), [proposal, heavy_distr])
+    if heavy_distr is None:
+        mixed_proposal = proposal
+    else:
+        mixed_proposal = MixtureGeneral(Categorical(mixed_proposal_weights), [proposal, heavy_distr])
+
     empirical_iterate = empirical_update(key_empirical, logpdf, pow, n_samples, global_kernel, mixed_proposal)
     samples = resample_empirical_update(key_resample, empirical_iterate, n_samples)
-    samples = local_kernel.sampler(split(key_lker, local_kernel.n_chains),
+    samples = local_kernel.sampler(keys=split(key_lker, local_kernel.n_chains),
                                    state=samples,
                                    steps=n_samples // global_kernel.n_chains)
     return train_func(proposal, samples)
@@ -50,7 +55,7 @@ def emc_step(i, key, n_samples, logpdf, proposal, global_kernel, local_kernel, t
 def empirical_update(key, logpdf, pow, n_samples, global_kernel, prev_proposal):
     proposal_samples = prev_proposal.sample(key, (n_samples,))
     proposal_log_weights = pow * (logpdf(proposal_samples) - prev_proposal.log_prob(proposal_samples))
-    global_kernel_samples = global_kernel.sampler(key=split(key, global_kernel.n_chains),
+    global_kernel_samples = global_kernel.sampler(keys=split(key, global_kernel.n_chains),
                                                   state=proposal_samples,
                                                   steps=n_samples // global_kernel.n_chains)
     global_kernel_log_weights = pow * (logpdf(global_kernel_samples) - prev_proposal.log_prob(global_kernel_samples))

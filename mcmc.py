@@ -74,11 +74,11 @@ def ula_kernel(i, state, keys, grad_logpdf, step_size):
     return new_state
 
 
-def independent_mh(key, state, logpdf, burn_in_steps, steps, params):
+def independent_mh(key, init_state, logpdf, burn_in_steps, steps, params):
     """
     Implements the independent Metropolis-Hastings algorithm.
     """
-    return mh(state,
+    return mh(init_state,
               key,
               logpdf=logpdf,
               transition=imh_kernel,
@@ -88,11 +88,11 @@ def independent_mh(key, state, logpdf, burn_in_steps, steps, params):
               )
 
 
-def random_walk_mh(key, state, logpdf, burn_in_steps, steps, params):
+def random_walk_mh(key, init_state, logpdf, burn_in_steps, steps, params):
     """
     Implements the Random Walk Metropolis-Hastings.
     """
-    return mh(state,
+    return mh(init_state,
               key,
               logpdf=logpdf,
               transition=rwm_kernel,
@@ -102,11 +102,11 @@ def random_walk_mh(key, state, logpdf, burn_in_steps, steps, params):
               )
 
 
-def adjusted_langevin(key, state, logpdf, params, burn_in_steps, steps):
+def adjusted_langevin(key, init_state, logpdf, params, burn_in_steps, steps):
     """
     Implements the Metropolis Adjusted Langevin Algorithm (MALA).
     """
-    return mh(state,
+    return mh(init_state,
               key,
               logpdf=logpdf,
               transition=mala_kernel,
@@ -115,13 +115,17 @@ def adjusted_langevin(key, state, logpdf, params, burn_in_steps, steps):
               params=params)
 
 
-def unadjusted_langevin(key, state, grad_logpdf, step_size, steps):
+def unadjusted_langevin(key, init_state, grad_logpdf, step_size, burn_in_steps, steps):
     """
     Implements the unadjusted Langevin Algorithm (ULA).
     """
     keys = split(key, steps)
-    ula_func = partial(ula_kernel,
-                       keys=keys,
-                       grad_logpdf=grad_logpdf,
-                       step_size=step_size)
-    return fori_loop(0, steps, ula_func, state)
+    partial_ula = partial(ula_kernel, keys=keys, grad_logpdf=grad_logpdf, step_size=step_size)
+
+    def ula_chain(i, samples):
+        return samples.at[i].set(partial_ula(i, samples[i - 1]))
+
+    first_state = fori_loop(0, burn_in_steps, partial_ula, init_state)
+    samples = jnp.empty((steps, *first_state.shape), dtype=first_state.dtype)
+    samples = samples.at[0].set(first_state)
+    return fori_loop(1, steps, ula_chain, samples)
