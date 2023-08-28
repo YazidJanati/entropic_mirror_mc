@@ -37,7 +37,7 @@ with default_device(devices("cpu")[device_num]):
     model = Gaussian_Mixture(dim=dim, n_components=2)
 
     with jax.disable_jit(False):
-        proposal = emc(key_emc, pow_eps=1 / dim, logpdf=target.log_prob, n_train=10, n_samples=1000, model=model,
+        proposal = emc(key_emc, pow_eps=.5, logpdf=target.log_prob, n_train=10, n_samples=1000, model=model,
                        global_kernel=global_kernel,
                        local_kernel=local_kernel,
                        n_chains=20,
