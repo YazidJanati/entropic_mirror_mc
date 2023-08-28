@@ -19,8 +19,8 @@ with default_device(devices("cpu")[device_num]):
     dim = 2
     heavy_distr = MultivariateStudentT(df=2., loc=jnp.zeros(dim), scale_tril=jnp.eye(dim))
     cov = jnp.array([[10., 1.], [-5., 1.]])
-    target = mog2_blockdiag_cov(dim=dim, means=[0., 5.], mini_cov=jnp.eye(2),
-                                weights=jnp.array([.1, .9]))
+    target = mog2_blockdiag_cov(dim=dim, means=[0., 7.], mini_cov=.5*jnp.eye(2),
+                                weights=jnp.array([.5, .5]))
     # means = jnp.array([[0., 0.], [5., 5.]])
     # covs = .2 * jnp.eye(dim)[jnp.newaxis, :].repeat(2, 0)
     # target = MixtureSameFamily(Categorical(jnp.array([.9, .1])), MultivariateNormal(means, covs))

@@ -63,7 +63,11 @@ def empirical_update(key, logpdf, pow_eps, n_samples, global_kernel, prev_propos
                  lambda _: (global_kernel_lse - jnp.log(n_samples)) / (global_kernel_lse - proposal_lse),
                  lambda _: 0.5,
                  operand=None)
-    return proposal_samples, proposal_log_weights, global_kernel_samples, global_kernel_log_weights, alpha
+    return (proposal_samples,
+            proposal_log_weights - proposal_lse,
+            global_kernel_samples,
+            global_kernel_log_weights - global_kernel_lse,
+            alpha)
 
 
 def resample_empirical_update(key, empirical_update, n_samples):
@@ -71,8 +75,9 @@ def resample_empirical_update(key, empirical_update, n_samples):
     key_resample_gker, key_resample_proposal, key_cat = split(key, 3)
     proposal_samples, proposal_log_weights, global_kernel_samples, global_kernel_log_weights, alpha = empirical_update
     samples = jnp.vstack([proposal_samples, global_kernel_samples])
-    log_weights = jnp.concatenate([alpha * proposal_log_weights, (1 - alpha) * global_kernel_log_weights])
+    log_weights = jnp.concatenate([jnp.log(alpha) + proposal_log_weights, jnp.log(1 - alpha) + global_kernel_log_weights])
     resample_idxs = categorical(key_cat, log_weights, shape=(n_samples,))
+    # print(resample_idxs)
     # from utils import display_samples
     # resamples = samples[resample_idxs, :]
     # display_samples(resamples, size=5)
