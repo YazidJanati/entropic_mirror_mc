@@ -30,7 +30,8 @@ def emc(key, logpdf, pow_eps, n_train, n_samples, model, global_kernel, local_ke
             return params_to_gm(*params)
 
     keys = split(key_train, n_train)
-    partial_emc_step = partial(emc_step, key=keys, pow_eps=pow_eps, n_samples=n_samples, logpdf=logpdf, global_kernel=global_kernel,
+    partial_emc_step = partial(emc_step, key=keys, pow_eps=pow_eps, n_samples=n_samples, logpdf=logpdf,
+                               global_kernel=global_kernel,
                                local_kernel=local_kernel,
                                train_func=train_func, heavy_distr=heavy_distr,
                                mixed_proposal_weights=mixed_proposal_weights)
