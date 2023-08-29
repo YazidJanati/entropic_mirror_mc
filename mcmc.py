@@ -4,6 +4,7 @@ import jax.numpy as jnp
 from jax.lax import fori_loop, cond
 from typing import NamedTuple, Callable
 from numpyro.distributions import Distribution
+from utils import display_samples
 
 
 class RWM(NamedTuple):
@@ -19,8 +20,8 @@ class MALA(NamedTuple):
     grad_logpdf: Callable
 
 
-def mh_accept(key, prev_state, new_state, mh_ratio):
-    p_accept = jnp.clip(jnp.exp(mh_ratio), a_max=1)
+def mh_accept(key, prev_state, new_state, log_mh_ratio):
+    p_accept = jnp.clip(jnp.exp(log_mh_ratio), a_max=1)
     accepted = bernoulli(key, p_accept)
     return cond(accepted,
                 lambda _: new_state,
@@ -30,20 +31,21 @@ def mh_accept(key, prev_state, new_state, mh_ratio):
 
 def mh_step(i, state, logpdf, transition, keys):
     key_state, key_acc = split(keys[i])
-    new_state, fwd_logprob, prev_state, bwd_logprob = transition(key_state, state)
-    mh_ratio = logpdf(new_state) + fwd_logprob - logpdf(prev_state) - bwd_logprob
-    return mh_accept(key_acc, prev_state, new_state, mh_ratio)
+    new_state, rev_logprob, prev_state, fwd_logprob = transition(key_state, state)
+    log_mh_ratio = logpdf(new_state) + rev_logprob - logpdf(prev_state) - fwd_logprob
+    return mh_accept(key_acc, prev_state, new_state, log_mh_ratio)
 
 
 def mh(init_state, key, logpdf, transition, burn_in_steps, steps, params):
-    keys = split(key, steps)
+    keys_mh = split(key, burn_in_steps + steps)
     partial_transition = partial(transition, params=params)
-    partial_mh = partial(mh_step, logpdf=logpdf, transition=partial_transition, keys=keys)
+    partial_mh_burn_in = partial(mh_step, logpdf=logpdf, transition=partial_transition, keys=keys_mh[:burn_in_steps])
+    partial_mh_chain = partial(mh_step, logpdf=logpdf, transition=partial_transition, keys=keys_mh[burn_in_steps:])
 
     def mh_chain(i, samples):
-        return samples.at[i].set(partial_mh(i, samples[i-1]))
+        return samples.at[i].set(partial_mh_chain(i, samples[i-1]))
 
-    first_state = fori_loop(0, burn_in_steps, partial_mh, init_state)
+    first_state = fori_loop(0, burn_in_steps, partial_mh_burn_in, init_state)
     samples = jnp.empty((steps, *first_state.shape), dtype=first_state.dtype)
     samples = samples.at[0].set(first_state)
     return fori_loop(1, steps, mh_chain, samples)
@@ -60,12 +62,12 @@ def imh_kernel(key, state, params):
 
 
 def mala_kernel(key, state, params):
-    key, subkey = split(key)
-    eps = normal(subkey, state.shape)
+    key_noise, _ = split(key)
+    eps = normal(key_noise, state.shape)
     new_state = state + params.step_size * params.grad_logpdf(state) + jnp.sqrt(2 * params.step_size) * eps
-    log_prob = - (eps ** 2) / 2
+    fwd_logprob = - (eps ** 2) / 2
     rev_logprob = - (state - new_state - params.step_size * params.grad_logpdf(new_state)) ** 2 / (4 * params.step_size)
-    return new_state, log_prob.sum(-1), state, rev_logprob.sum(-1)
+    return new_state, rev_logprob.sum(-1), state, fwd_logprob.sum(-1)
 
 
 def ula_kernel(i, state, keys, grad_logpdf, step_size):

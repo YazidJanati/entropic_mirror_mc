@@ -76,6 +76,6 @@ with default_device(devices("cpu")[0]):
 
     plt.figure(figsize=(10, 5))
     plt.scatter(emc_proposal_samples[:, 0], emc_proposal_samples[:, 1])
-    # plt.scatter(amc_proposal_samples[:, 0], amc_proposal_samples[:, 1])
+    plt.scatter(amc_proposal_samples[:, 0], amc_proposal_samples[:, 1])
     plt.scatter(target_samples[:, 0], target_samples[:, 1])
     plt.show()
