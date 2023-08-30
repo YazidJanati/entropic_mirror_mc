@@ -121,13 +121,14 @@ def unadjusted_langevin(key, init_state, grad_logpdf, step_size, burn_in_steps, 
     """
     Implements the unadjusted Langevin Algorithm (ULA).
     """
-    keys = split(key, steps)
-    partial_ula = partial(ula_kernel, keys=keys, grad_logpdf=grad_logpdf, step_size=step_size)
+    keys = split(key, burn_in_steps + steps)
+    partial_ula_burn_in = partial(ula_kernel, keys=keys[:burn_in_steps], grad_logpdf=grad_logpdf, step_size=step_size)
+    partial_ula_chain = partial(ula_kernel, keys=keys[burn_in_steps:], grad_logpdf=grad_logpdf, step_size=step_size)
 
     def ula_chain(i, samples):
-        return samples.at[i].set(partial_ula(i, samples[i - 1]))
+        return samples.at[i].set(partial_ula_chain(i, samples[i - 1]))
 
-    first_state = fori_loop(0, burn_in_steps, partial_ula, init_state)
+    first_state = fori_loop(0, burn_in_steps, partial_ula_burn_in, init_state)
     samples = jnp.empty((steps, *first_state.shape), dtype=first_state.dtype)
     samples = samples.at[0].set(first_state)
     return fori_loop(1, steps, ula_chain, samples)

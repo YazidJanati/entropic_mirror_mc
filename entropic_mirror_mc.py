@@ -9,6 +9,7 @@ from jax.lax import cond
 from jax.nn import logsumexp
 from typing import NamedTuple, Callable
 from jax.tree_util import Partial as partial
+from utils import display_samples
 
 
 class MCMC_kernel(NamedTuple):
@@ -40,6 +41,7 @@ def emc(key, logpdf, pow_eps, n_train, n_samples, model, global_kernel, local_ke
 
 def emc_step(i, proposal, pow_eps, key, n_samples, logpdf, global_kernel, local_kernel, train_func, heavy_distr,
              mixed_proposal_weights):
+    print(i)
     key_empirical, key_resample, key_lker, key_train = split(key[i], 4)
     if heavy_distr is None:
         mixed_proposal = proposal
@@ -60,10 +62,16 @@ def empirical_update(key, logpdf, pow_eps, n_samples, global_kernel, prev_propos
     global_kernel_log_weights = pow_eps * (
                 logpdf(global_kernel_samples) - prev_proposal.log_prob(global_kernel_samples))
     global_kernel_lse, proposal_lse = logsumexp(global_kernel_log_weights), logsumexp(proposal_log_weights)
-    alpha = cond((global_kernel_lse - jnp.log(n_samples) > 0),
+    alpha = cond(global_kernel_lse - jnp.log(n_samples) > 0,
                  lambda _: (global_kernel_lse - jnp.log(n_samples)) / (global_kernel_lse - proposal_lse),
                  lambda _: 0.5,
                  operand=None)
+    # from utils import display_samples
+    # display_samples(global_kernel_samples)
+    # from jax import debug
+    # debug.print('{alpha}', alpha=alpha)
+    # debug.print('{argmax}', argmax=jnp.argmax(global_kernel_log_weights))
+    # debug.print('{x}', x=global_kernel_samples[jnp.argmax(global_kernel_log_weights), :])
     return (proposal_samples,
             proposal_log_weights - proposal_lse,
             global_kernel_samples,
@@ -78,6 +86,7 @@ def resample_empirical_update(key, empirical_update, n_samples):
     samples = jnp.vstack([proposal_samples, global_kernel_samples])
     log_weights = jnp.concatenate([jnp.log(alpha) + proposal_log_weights, jnp.log(1 - alpha) + global_kernel_log_weights])
     resample_idxs = categorical(key_cat, log_weights, shape=(n_samples,))
+    print(resample_idxs)
     # print(resample_idxs)
     # from utils import display_samples
     # resamples = samples[resample_idxs, :]

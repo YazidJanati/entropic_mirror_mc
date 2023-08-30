@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="yjanati@10.33.35.222:22 password (13)" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
+  <component name="PublishConfigData" autoUpload="Always" serverName="yjanati@10.33.35.222:22 password (27)" remoteFilesAllowedToDisappearOnAutoupload="false" confirmBeforeUploading="false">
     <option name="confirmBeforeUploading" value="false" />
     <serverData>
       <paths name="yjanati@10.33.35.222:22 password">
@@ -42,6 +42,20 @@
         <serverdata>
           <mappings>
             <mapping deploy="/tmp/pycharm_project_106" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="yjanati@10.33.35.222:22 password (27)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/yjanati/projects/entropic_mirror_mc" local="$PROJECT_DIR$" />
+          </mappings>
+        </serverdata>
+      </paths>
+      <paths name="yjanati@10.33.35.222:22 password (28)">
+        <serverdata>
+          <mappings>
+            <mapping deploy="/home/yjanati/projects/entropic_mirror_mc" local="$PROJECT_DIR$" />
           </mappings>
         </serverdata>
       </paths>

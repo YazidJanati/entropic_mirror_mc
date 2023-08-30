@@ -12,7 +12,8 @@ from typing import NamedTuple, Callable
 from jax.tree_util import Partial as partial
 
 
-def amc(key, logpdf, n_train, n_samples, model, global_kernel, k_global, local_steps):
+def amc(key, logpdf, n_train, n_samples, model, global_kernel, k_global, local_steps,
+        heavy_distr=None, mixed_proposal_weights=jnp.array([.9, .1])):
     key_train, key_init_proposal = split(key, 2)
     if isinstance(model, Gaussian_Mixture):
         key_means, key_covs, key_log_weights = split(key_init_proposal, 3)
@@ -26,24 +27,31 @@ def amc(key, logpdf, n_train, n_samples, model, global_kernel, k_global, local_s
     keys = split(key_train, n_train)
     partial_adaptivemc_step = partial(amc_step, key=keys, n_samples=n_samples, logpdf=logpdf,
                                       global_kernel=global_kernel,
-                                      k_global=k_global, local_steps=local_steps, train_func=train_func)
+                                      k_global=k_global, local_steps=local_steps, train_func=train_func,
+                                      heavy_distr=heavy_distr, mixed_proposal_weights=mixed_proposal_weights)
     return fori_loop(0, n_train, partial_adaptivemc_step, init_proposal)
 
 
-def amc_step(i, proposal, key, n_samples, logpdf, global_kernel, k_global, local_steps, train_func):
-    proposal_samples = proposal.sample(key[i], (n_samples,))
+def amc_step(i, proposal, key, n_samples, logpdf, global_kernel, k_global, local_steps, train_func,
+             heavy_distr, mixed_proposal_weights):
+
+    if heavy_distr is None:
+        mixed_proposal = proposal
+    else:
+        mixed_proposal = MixtureGeneral(Categorical(mixed_proposal_weights), [proposal, heavy_distr])
+    mixed_proposal_samples = mixed_proposal.sample(key[i], (n_samples,))
     key_train, key_sampler = split(key[i], 2)
     def imh_samples(key_sampler, proposal):
-        keys_imh = split(key_sampler, n_samples)
+        keys = split(key_sampler, n_samples + 1)
         imh_params = IMH(proposal=proposal)
         partial_imh = partial(independent_mh, params=imh_params, logpdf=logpdf, burn_in_steps=local_steps, steps=1)
         imh = vmap(partial_imh, in_axes=(0, 0))
-        return imh(keys_imh, proposal_samples).reshape(n_samples, -1)
+        return imh(keys[:n_samples], proposal.sample(keys[-1], (n_samples,))).reshape(n_samples, -1)
 
     samples = cond(i % k_global == 0,
                    lambda _: imh_samples(key_sampler, proposal),
                    lambda _: global_kernel(keys=split(key_sampler, n_samples),
-                                           state=proposal_samples),
+                                           state=mixed_proposal.sample(split(key_sampler)[0], (n_samples,))),
                    operand=None)
     # if i % k_global == 0:
     #     keys_imh = split(key_sampler, n_samples)

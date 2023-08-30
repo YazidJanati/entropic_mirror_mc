@@ -20,8 +20,9 @@ def bkjx_loop(key, init_state, kernel, steps):
 
     return fori_loop(0, steps, one_step, kernel.init(init_state))
 
-
-with default_device(devices('cpu')[0]):
+os.environ['PATH'] = '/usr/local/cuda-12.1/bin'
+os.environ['JAX_LOG_COMPILES'] = '1'
+with default_device(devices('gpu')[0]):
     with jax.disable_jit(False):
         dim = 2
         key = PRNGKey(124)
