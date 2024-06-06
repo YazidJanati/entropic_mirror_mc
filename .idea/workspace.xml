@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="1011c0a6-aa6c-41da-809c-5ed5428abbd7" name="Changes" comment="emc working better using blackjax + seems like there is still an issue with mcmc">
+      <change afterPath="$PROJECT_DIR$/configs/mog2.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/mog25.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/configs/mog4.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/em2c.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiments/gmm_exp.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiments/gmm_script.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/experiments/load_gmm_exp.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/realnvp.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/diffusion.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/em2c_rnvp_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/isir_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/nuts_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/rnvp2_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/smc_sampler_test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/tests/tempering.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/adaptive_mc.py" beforeDir="false" afterPath="$PROJECT_DIR$/adaptive_mc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/entropic_mirror_mc.py" beforeDir="false" afterPath="$PROJECT_DIR$/entropic_mirror_mc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/flowMC/nfmodel/common.py" beforeDir="false" afterPath="$PROJECT_DIR$/flowMC/nfmodel/common.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gaussian_mixture.py" beforeDir="false" afterPath="$PROJECT_DIR$/gaussian_mixture.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mcmc.py" beforeDir="false" afterPath="$PROJECT_DIR$/mcmc.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/targets.py" beforeDir="false" afterPath="$PROJECT_DIR$/targets.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/emc_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/emc_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/imh_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/imh_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/mh_test.py" beforeDir="false" afterPath="$PROJECT_DIR$/tests/mh_test.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tests/rnvp.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Jupyter Notebook" />
+        <option value="Python Script" />
+        <option value="JavaScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2UZIe4FfY4NuJBx7fiNHUPOOUJz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "true",
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "/Users/yjel/Documents/work/code/entropic_mirror_mc",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "ssh.settings",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "com.intellij.ide.scratch.ScratchImplUtil$2/New Scratch File": [
+      "Python"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/configs" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.em2c_rnvp_test">
+    <configuration name="em2c_rnvp_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="entropic_mirror_mc" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/em2c_rnvp_test.py" />
+      <option name="PARAMETERS" value="2 50" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="load_gmm_exp" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="entropic_mirror_mc" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/experiments" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/experiments/load_gmm_exp.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="mh_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="entropic_mirror_mc" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/mh_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="rnvp2_test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="entropic_mirror_mc" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/tests/rnvp2_test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="scratch_3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="entropic_mirror_mc" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$APPLICATION_CONFIG_DIR$/scratches" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$APPLICATION_CONFIG_DIR$/scratches/scratch_3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.load_gmm_exp" />
+      <item itemvalue="Python.mh_test" />
+      <item itemvalue="Python.scratch_3" />
+      <item itemvalue="Python.em2c_rnvp_test" />
+      <item itemvalue="Python.rnvp2_test" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.em2c_rnvp_test" />
+        <item itemvalue="Python.load_gmm_exp" />
+        <item itemvalue="Python.scratch_3" />
+        <item itemvalue="Python.mh_test" />
+        <item itemvalue="Python.rnvp2_test" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-python-sdk-09665e90c3a7-b11f5e8da5ad-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-233.15026.15" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration>$USER_HOME$/.subversion</configuration>
+    <option name="sshConnectionType" value="PASSWORD" />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1011c0a6-aa6c-41da-809c-5ed5428abbd7" name="Changes" comment="" />
+      <created>1693140768005</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1693140768005</updated>
+      <workItem from="1693140769324" duration="3589000" />
+      <workItem from="1693148512644" duration="34000" />
+      <workItem from="1693149249704" duration="8000" />
+      <workItem from="1693149454909" duration="746000" />
+      <workItem from="1693150220120" duration="13063000" />
+      <workItem from="1693165738289" duration="2912000" />
+      <workItem from="1693169454144" duration="9692000" />
+      <workItem from="1693179259908" duration="48997000" />
+      <workItem from="1693322665987" duration="15923000" />
+      <workItem from="1693401273850" duration="103000" />
+      <workItem from="1693401409366" duration="245000" />
+      <workItem from="1693401750869" duration="1000" />
+      <workItem from="1693408760671" duration="35521000" />
+      <workItem from="1693571042168" duration="692000" />
+      <workItem from="1693573876247" duration="650000" />
+      <workItem from="1693574725083" duration="598000" />
+      <workItem from="1693577600149" duration="4357000" />
+      <workItem from="1693770804379" duration="1217000" />
+      <workItem from="1693778674191" duration="5285000" />
+      <workItem from="1693831179131" duration="412000" />
+      <workItem from="1693859838691" duration="1821000" />
+      <workItem from="1693996046076" duration="2775000" />
+      <workItem from="1696251409337" duration="24434000" />
+      <workItem from="1696949689965" duration="598000" />
+      <workItem from="1697193133311" duration="4979000" />
+      <workItem from="1698607072317" duration="99000" />
+      <workItem from="1698607179560" duration="119000" />
+      <workItem from="1698607307932" duration="2603000" />
+      <workItem from="1698611087752" duration="18389000" />
+      <workItem from="1699820083879" duration="2400000" />
+      <workItem from="1701541840720" duration="593000" />
+      <workItem from="1708880100723" duration="31181000" />
+      <workItem from="1708960074252" duration="23637000" />
+      <workItem from="1709052312436" duration="2001000" />
+      <workItem from="1709054923617" duration="163000" />
+      <workItem from="1709055104106" duration="599000" />
+      <workItem from="1709057225197" duration="20420000" />
+      <workItem from="1709153104238" duration="27107000" />
+      <workItem from="1709888807278" duration="6821000" />
+      <workItem from="1710426114484" duration="1220000" />
+      <workItem from="1710446594377" duration="1873000" />
+      <workItem from="1711236181885" duration="643000" />
+      <workItem from="1711276152899" duration="597000" />
+      <workItem from="1711288150522" duration="1195000" />
+      <workItem from="1711571886732" duration="1335000" />
+      <workItem from="1712047968175" duration="957000" />
+      <workItem from="1712054397820" duration="598000" />
+      <workItem from="1712069208712" duration="624000" />
+      <workItem from="1712070541384" duration="6983000" />
+      <workItem from="1712593390763" duration="2282000" />
+    </task>
+    <task id="LOCAL-00001" summary="added jax implementation of EM">
+      <option name="closed" value="true" />
+      <created>1693166450919</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1693166450919</updated>
+    </task>
+    <task id="LOCAL-00002" summary="started emc">
+      <option name="closed" value="true" />
+      <created>1693168963985</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1693168963985</updated>
+    </task>
+    <task id="LOCAL-00003" summary="emc finished + some changes to gaussian_mixture">
+      <option name="closed" value="true" />
+      <created>1693176204596</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1693176204597</updated>
+    </task>
+    <task id="LOCAL-00004" summary="added burn_in to ula + some fixes to emc">
+      <option name="closed" value="true" />
+      <created>1693231878396</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1693231878396</updated>
+    </task>
+    <task id="LOCAL-00005" summary="emc working">
+      <option name="closed" value="true" />
+      <created>1693240124648</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1693240124648</updated>
+    </task>
+    <task id="LOCAL-00006" summary="first test with emc + EM is unstable">
+      <option name="closed" value="true" />
+      <created>1693243253523</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1693243253523</updated>
+    </task>
+    <task id="LOCAL-00007" summary="first test with emc + EM is unstable">
+      <option name="closed" value="true" />
+      <created>1693243271277</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1693243271277</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fixed log_weights bug in resample_empirical">
+      <option name="closed" value="true" />
+      <created>1693245514925</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1693245514925</updated>
+    </task>
+    <task id="LOCAL-00009" summary="emc working with blackjax + mcmc not working somehow">
+      <option name="closed" value="true" />
+      <created>1693257086223</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1693257086223</updated>
+    </task>
+    <task id="LOCAL-00010" summary="added adaptive MC with independent sampler">
+      <option name="closed" value="true" />
+      <created>1693264579235</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1693264579235</updated>
+    </task>
+    <task id="LOCAL-00011" summary="fixed mcmc bug, all algos are working now">
+      <option name="closed" value="true" />
+      <created>1693321981477</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1693321981477</updated>
+    </task>
+    <task id="LOCAL-00012" summary="emc working better using blackjax + seems like there is still an issue with mcmc">
+      <option name="closed" value="true" />
+      <created>1693386354636</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1693386354636</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="added jax implementation of EM" />
+    <MESSAGE value="started emc" />
+    <MESSAGE value="emc finished + some changes to gaussian_mixture" />
+    <MESSAGE value="added burn_in to ula + some fixes to emc" />
+    <MESSAGE value="emc working" />
+    <MESSAGE value="first test with emc + EM is unstable" />
+    <MESSAGE value="fixed log_weights bug in resample_empirical" />
+    <MESSAGE value="emc working with blackjax + mcmc not working somehow" />
+    <MESSAGE value="added adaptive MC with independent sampler" />
+    <MESSAGE value="fixed mcmc bug, all algos are working now" />
+    <MESSAGE value="emc working better using blackjax + seems like there is still an issue with mcmc" />
+    <option name="LAST_COMMIT_MESSAGE" value="emc working better using blackjax + seems like there is still an issue with mcmc" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/mcmc.py</url>
+          <line>54</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/miniforge3/lib/python3.9/site-packages/blackjax/mcmc/hmc.py</url>
+          <line>79</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/miniforge3/lib/python3.9/site-packages/blackjax/mcmc/nuts.py</url>
+          <line>136</line>
+          <option name="timeStamp" value="29" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$USER_HOME$/miniforge3/lib/python3.9/site-packages/blackjax/mcmc/metrics.py</url>
+          <line>101</line>
+          <option name="timeStamp" value="31" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/nuts_test.py</url>
+          <line>48</line>
+          <option name="timeStamp" value="35" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/flowMC/nfmodel/utils.py</url>
+          <line>39</line>
+          <option name="timeStamp" value="40" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/experiments/load_gmm_exp.py</url>
+          <line>28</line>
+          <option name="timeStamp" value="56" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/rnvp2_test.py</url>
+          <line>33</line>
+          <option name="timeStamp" value="60" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/rnvp2_test.py</url>
+          <line>109</line>
+          <option name="timeStamp" value="64" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/em2c.py</url>
+          <line>95</line>
+          <option name="timeStamp" value="71" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/em2c.py</url>
+          <line>49</line>
+          <option name="timeStamp" value="72" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/em2c_rnvp_test.py</url>
+          <line>81</line>
+          <option name="timeStamp" value="73" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/em2c_rnvp_test.py</url>
+          <line>5</line>
+          <option name="timeStamp" value="77" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/tests/mh_test.py</url>
+          <line>68</line>
+          <option name="timeStamp" value="80" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$nuts_test.coverage" NAME="nuts_test Coverage Results" MODIFIED="1693493117594" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$imh_test.coverage" NAME="imh_test Coverage Results" MODIFIED="1694077691401" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$em_test.coverage" NAME="em_test Coverage Results" MODIFIED="1693243441071" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$scratch.coverage" NAME="scratch Coverage Results" MODIFIED="1698881729284" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$emc.coverage" NAME="emc Coverage Results" MODIFIED="1693168510341" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$rnvp.coverage" NAME="rnvp Coverage Results" MODIFIED="1708983059126" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$emc_test.coverage" NAME="emc_test Coverage Results" MODIFIED="1709031734464" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$2GM_exp.coverage" NAME="2gmm_exp Coverage Results" MODIFIED="1708905479569" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiments" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$tempering.coverage" NAME="tempering Coverage Results" MODIFIED="1698828424357" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$load_gmm_exp.coverage" NAME="load_gmm_exp Coverage Results" MODIFIED="1709888886204" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/experiments" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$smc_sampler_test.coverage" NAME="smc_sampler_test Coverage Results" MODIFIED="1698837012606" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$em2c.coverage" NAME="em2c Coverage Results" MODIFIED="1709207197898" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$scratch_3.coverage" NAME="scratch_3 Coverage Results" MODIFIED="1709634529355" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$diffusion.coverage" NAME="diffusion Coverage Results" MODIFIED="1696536052352" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$nuts.coverage" NAME="nuts Coverage Results" MODIFIED="1698675608882" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$APPLICATION_CONFIG_DIR$/scratches" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$mcmc.coverage" NAME="mcmc Coverage Results" MODIFIED="1693224134519" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$mh_test.coverage" NAME="mh_test Coverage Results" MODIFIED="1709634503354" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$em2c_rnvp_test.coverage" NAME="em2c_rnvp_test Coverage Results" MODIFIED="1711236204628" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$gaussian_mixture.coverage" NAME="gaussian_mixture Coverage Results" MODIFIED="1693165580967" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$rnvp_test.coverage" NAME="rnvp_test Coverage Results" MODIFIED="1708881903618" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$entropic_mirror_mc.coverage" NAME="entropic_mirror_mc Coverage Results" MODIFIED="1693235731433" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$rnvp2_test.coverage" NAME="rnvp2_test Coverage Results" MODIFIED="1709207433175" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$targets.coverage" NAME="targets Coverage Results" MODIFIED="1693224875768" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/entropic_mirror_mc$isir_test.coverage" NAME="isir_test Coverage Results" MODIFIED="1693471972306" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/tests" />
+  </component>
+</project>

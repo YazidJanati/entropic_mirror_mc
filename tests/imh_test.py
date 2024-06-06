@@ -1,7 +1,7 @@
 import jax
 import jax.numpy as jnp
 from jax.lax import fori_loop
-from jax import grad, default_device, devices, vmap
+from jax import grad, default_device, devices, vmap, jit
 import os
 from numpyro.distributions import MultivariateNormal
 from mcmc import random_walk_mh, RWM, MALA, adjusted_langevin, independent_mh, IMH
@@ -13,7 +13,7 @@ import blackjax
 
 with default_device(devices('cpu')[0]):
     with jax.disable_jit(False):
-        dim = 10
+        dim = 40
         key = PRNGKey(126)
         n_chains = 300
         burn_in_steps = 1000
@@ -21,15 +21,17 @@ with default_device(devices('cpu')[0]):
         cov = jnp.array([[10., 1.], [-5., 1.]])
         target = mog2_blockdiag_cov(dim=dim, means=[0., 10.], mini_cov=cov,
                                     weights=jnp.array([.5, .5]))
-        proposal = MultivariateNormal(jnp.zeros(dim), 100*jnp.eye(dim))
+        proposal = mog2_blockdiag_cov(dim=dim, means=[0., 10.], mini_cov=cov,
+                                    weights=jnp.array([.95, .05]))
 
         keys_imh = split(key, n_chains)
         imh_params = IMH(proposal=proposal)
         partial_imh = partial(independent_mh, params=imh_params, logpdf=target.log_prob, burn_in_steps=25000,
                               steps=1)
-        imh = vmap(partial_imh, in_axes=(0, 0))
+        imh = jit(vmap(partial_imh, in_axes=(0, 0)))
         init_samples = proposal.sample(key, (n_chains,))
         target.log_prob(init_samples)
+        proposal.log_prob(init_samples)
         # rwm_samples = rwmh(key_rwm, init_samples).reshape(-1, dim)
         imh_samples = imh(keys_imh, init_samples).reshape(-1, dim)
         target_samples = target.sample(key, (1000,))

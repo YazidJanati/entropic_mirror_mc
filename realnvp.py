@@ -1,9 +1,14 @@
-# from numpyro.distributions import Distribution, constraints
-# from typing import Sequence, Callable
-# import jax
-# import jax.numpy as jnp
-# from flax import linen as nn
-# import numpy as np
+from numpyro.distributions import Distribution, constraints
+from typing import Sequence, Callable
+import optax
+from jax.lax import fori_loop
+from jax.random import split
+from jax.tree_util import Partial as partial
+import jax
+import jax.numpy as jnp
+from flax import linen as nn
+import numpy as np
+from jax import value_and_grad, debug
 
 class MLP(nn.Module):
     """
@@ -132,9 +137,9 @@ class RealNVP(nn.Module):
             log_det += log_det_i
         return x, log_det
 
-    def sample(self, rng_key, n_samples):
+    def sample(self, rng_key, sample_shape):
         gaussian = jax.random.multivariate_normal(
-            rng_key, jnp.zeros(self.n_features), jnp.eye(self.n_features), shape=(n_samples,)
+            rng_key, jnp.zeros(self.n_features), jnp.eye(self.n_features), shape=sample_shape
         )
         samples = self.inverse(gaussian)[0]
         # samples = samples * jnp.sqrt(jnp.diag(self.base_cov.value)) + self.base_mean.value
@@ -147,20 +152,61 @@ class RealNVP(nn.Module):
             y, jnp.zeros(self.n_features), jnp.eye(self.n_features)
         )
         return log_det
-class RNVP(Distribution):
+class RNVPDistr(Distribution):
     support = constraints.real_vector
 
-    def __init__(self, model, param, variables):
+    def __init__(self, model, param):
         self.model = model
         self.param = param
-        self.variables = variables
         self._batch_shape = ()
         self._event_shape = (model.n_features,)
 
     def log_prob(self, x):
-        return self.model.log_prob(x)
+        return self.model.apply({'params': self.param}, x, method=self.model.log_prob)
 
     def sample(self, key, sample_shape):
-        return self.model.sample(key, sample_shape=sample_shape)
+        return self.model.apply({'params': self.param}, key, sample_shape, method=self.model.sample)
 
-print('from where is it launching bro')
+def mle_training(key, samples, rnvp, loss_fn, batch_size, epochs, init_params=None, lr=1e-3,
+                 target_logpdf=None, target_samples=None):
+    n_samples = samples.shape[0]
+    steps_per_epoch = n_samples // batch_size
+
+    optim = optax.adam(lr)
+
+    def eval_fn(params):
+        rnvp_logprob = rnvp.apply({'params': params}, target_samples, method=rnvp.log_prob)
+        return (target_logpdf(target_samples) - rnvp_logprob()).mean()
+
+    def train_epoch(i, state, keys):
+
+        def grad_step(i, state):
+            params, opt_state = state
+            loss, grad = value_and_grad(loss_fn, argnums=(1))(rnvp, params, samples[idxs[i], :])
+            updates, opt_state = optim.update(grad, opt_state)
+            params = optax.apply_updates(params, updates)
+            return (params, opt_state)
+
+        key = keys[i]
+        n_samples = samples.shape[0]
+        idxs = jax.random.permutation(key, n_samples)[:steps_per_epoch * batch_size]
+        idxs = idxs.reshape(-1, batch_size)
+
+        return fori_loop(0, steps_per_epoch, grad_step, state)
+        # params, opt_state = state
+        # for i in range(idxs.shape[0]):
+        #     loss, grad = value_and_grad(loss_fn, argnums=(1))(rnvp, params, samples[idxs[i], :])
+        #     updates, opt_state = optim.update(grad, opt_state)
+        #     params = optax.apply_updates(params, updates)
+        #
+        # return (params, opt_state)
+
+    key_init, key_train = split(key)
+    keys = split(key, epochs)
+    train = partial(train_epoch, keys=keys)
+
+    if init_params is None:
+        init_params = rnvp.init(key_init, jnp.ones((1, rnvp.n_features)))["params"]
+
+    opt_state = optim.init(init_params)
+    return fori_loop(0, epochs, train, (init_params, opt_state))

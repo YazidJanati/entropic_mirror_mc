@@ -7,8 +7,6 @@ from numpyro.distributions import MixtureGeneral, Categorical
 from gaussian_mixture import Gaussian_Mixture, params_to_gm
 from gaussian_mixture import train as train_gm
 from jax.lax import cond
-from jax.nn import logsumexp
-from typing import NamedTuple, Callable
 from jax.tree_util import Partial as partial
 
 
@@ -31,6 +29,8 @@ def amc(key, logpdf, n_train, n_samples, model, global_kernel, k_global, local_s
                                       heavy_distr=heavy_distr, mixed_proposal_weights=mixed_proposal_weights)
     return fori_loop(0, n_train, partial_adaptivemc_step, init_proposal)
 
+def msc_step():
+    pass
 
 def amc_step(i, proposal, key, n_samples, logpdf, global_kernel, k_global, local_steps, train_func,
              heavy_distr, mixed_proposal_weights):
@@ -39,7 +39,6 @@ def amc_step(i, proposal, key, n_samples, logpdf, global_kernel, k_global, local
         mixed_proposal = proposal
     else:
         mixed_proposal = MixtureGeneral(Categorical(mixed_proposal_weights), [proposal, heavy_distr])
-    mixed_proposal_samples = mixed_proposal.sample(key[i], (n_samples,))
     key_train, key_sampler = split(key[i], 2)
     def imh_samples(key_sampler, proposal):
         keys = split(key_sampler, n_samples + 1)
@@ -53,13 +52,4 @@ def amc_step(i, proposal, key, n_samples, logpdf, global_kernel, k_global, local
                    lambda _: global_kernel(keys=split(key_sampler, n_samples),
                                            state=mixed_proposal.sample(split(key_sampler)[0], (n_samples,))),
                    operand=None)
-    # if i % k_global == 0:
-    #     keys_imh = split(key_sampler, n_samples)
-    #     imh_params = IMH(proposal=proposal)
-    #     partial_imh = partial(independent_mh, params=imh_params, logpdf=logpdf, burn_in_steps=local_steps, steps=1)
-    #     imh = vmap(partial_imh, in_axes=(0, 0))
-    #     samples = imh(keys_imh, proposal_samples)
-    # else:
-    #     samples = global_kernel(keys=split(key_sampler, n_samples),
-    #                             state=proposal_samples)
     return train_func(key=key_train, proposal=proposal, samples=samples)

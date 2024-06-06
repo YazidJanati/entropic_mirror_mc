@@ -107,7 +107,9 @@ def params_to_gm(means, covs, log_weights):
     return MixtureSameFamily(cat, norm)
 
 def gm_to_params(distr):
-    pass
+    return (distr.component_distribution.loc,
+            distr.component_distribution.covariance_matrix,
+            distr.mixing_distribution.probs)
 
 
 def assign(points, centroids):

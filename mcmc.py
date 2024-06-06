@@ -1,7 +1,7 @@
 from jax.tree_util import Partial as partial
-from jax.random import split, uniform, bernoulli, normal, multivariate_normal
+from jax.random import split, uniform, bernoulli, normal, multivariate_normal, categorical
 import jax.numpy as jnp
-from jax.lax import fori_loop, cond
+from jax.lax import fori_loop, cond, scan
 from typing import NamedTuple, Callable
 from numpyro.distributions import Distribution
 from utils import display_samples
@@ -43,7 +43,7 @@ def mh(init_state, key, logpdf, transition, burn_in_steps, steps, params):
     partial_mh_chain = partial(mh_step, logpdf=logpdf, transition=partial_transition, keys=keys_mh[burn_in_steps:])
 
     def mh_chain(i, samples):
-        return samples.at[i].set(partial_mh_chain(i, samples[i-1]))
+        return samples.at[i].set(partial_mh_chain(i, samples[i - 1]))
 
     first_state = fori_loop(0, burn_in_steps, partial_mh_burn_in, init_state)
     samples = jnp.empty((steps, *first_state.shape), dtype=first_state.dtype)
@@ -132,3 +132,27 @@ def unadjusted_langevin(key, init_state, grad_logpdf, step_size, burn_in_steps, 
     samples = jnp.empty((steps, *first_state.shape), dtype=first_state.dtype)
     samples = samples.at[0].set(first_state)
     return fori_loop(1, steps, ula_chain, samples)
+
+
+def isir(key, init_state, logpdf, proposal, n_proposals, burn_in_steps, steps):
+    keys = split(key, burn_in_steps + steps)
+
+    def isir_step(i, state, keys, logpdf, proposal, n_proposals):
+        key_samples, key_idx = split(keys[i])
+        proposal_samples = proposal.sample(key_samples, (n_proposals,))
+        log_weights = logpdf(proposal_samples) - proposal.log_prob(proposal_samples)
+        return proposal_samples[categorical(key_idx, log_weights), :]
+
+    partial_isir_burn_in = partial(isir_step, keys=keys[:burn_in_steps], logpdf=logpdf, proposal=proposal,
+                                   n_proposals=n_proposals)
+    partial_isir_chain = partial(isir_step, keys=keys[burn_in_steps:], logpdf=logpdf, proposal=proposal,
+                                 n_proposals=n_proposals)
+
+    first_state = fori_loop(0, burn_in_steps, partial_isir_burn_in, init_state)
+    samples = jnp.empty((steps, *first_state.shape), dtype=first_state.dtype)
+    samples = samples.at[0].set(first_state)
+
+    def isir_chain(i, samples):
+        return samples.at[i].set(partial_isir_chain(i, samples[i - 1]))
+
+    return fori_loop(1, steps, isir_chain, samples)

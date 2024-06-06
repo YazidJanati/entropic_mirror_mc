@@ -187,10 +187,10 @@ class Gaussian(Distribution):
     
 class Composable(Distribution):
 
-    distributions: list[Distribution]
-    partitions: dict[str, tuple[int, int]]
+    distributions: list
+    partitions: dict
 
-    def __init__(self, distributions: list[Distribution], partitions: dict):
+    def __init__(self, distributions: list, partitions: dict):
         self.distributions = distributions
         self.partitions = partitions
 

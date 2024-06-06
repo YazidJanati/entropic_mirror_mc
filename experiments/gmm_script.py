@@ -18,7 +18,6 @@ import os
 
 
 def run_gmm(key, target, dim, n_components, n_samples):
-
     logpdf = lambda x: jnp.log(10.) + target.log_prob(x)
     model = Gaussian_Mixture(dim=dim, n_components=n_components)
     heavy_distr = MultivariateStudentT(df=2., loc=jnp.zeros(dim), scale_tril=jnp.eye(dim))
@@ -52,29 +51,30 @@ def run_gmm(key, target, dim, n_components, n_samples):
                                      mixed_proposal_weights=jnp.array([.9, .1]),
                                      target_samples=target_samples
                                      )
-    emd_proposal, kl_vals = em2c_kl(key_algo,
-                                    pow_eps=.9,
-                                    logpdf=logpdf,
-                                    n_train=10,
-                                    n_samples=n_samples,
-                                    model=model,
-                                    global_kernel=global_kernel,
-                                    local_kernel=local_kernel,
-                                    n_chains=20,
-                                    heavy_distr=heavy_distr,
-                                    mixed_proposal_weights=jnp.array([.9, .1]),
-                                    target_samples=target_samples
-                                    )
+    em2c_res = {'params': gm_to_params(em2c_proposal), 'kl': kl_vals}
 
+    emd_proposal, kl_vals = emd_kl(key_algo,
+                                   pow_eps=.9,
+                                   logpdf=logpdf,
+                                   n_train=10,
+                                   n_samples=n_samples,
+                                   model=model,
+                                   global_kernel=global_kernel,
+                                   local_kernel=local_kernel,
+                                   n_chains=20,
+                                   heavy_distr=heavy_distr,
+                                   mixed_proposal_weights=jnp.array([.9, .1]),
+                                   target_samples=target_samples
+                                   )
+    emd_res = {'params': gm_to_params(emd_proposal), 'kl': kl_vals}
     def estimate_norm_const(key, target, proposal):
         n_samples = 5000
         samples = target.sample(key, (n_samples,))
         log_weights = target.log_prob(samples) - proposal.log_prob(samples)
-        return logsumexp(log_weights).exp() / n_samples
+        return jnp.exp(logsumexp(log_weights)) / n_samples
 
     key_normconst, _ = split(key_algo, 2)
-    em2c_norm_const = estimate_norm_const(key_normconst, target, em2c_proposal)
-    emd_norm_const = estimate_norm_const(key_normconst, target, emd_proposal)
+    em2c_res['normconst'] = estimate_norm_const(key_normconst, target, em2c_proposal)
+    emd_res['normconst'] = estimate_norm_const(key_normconst, target, emd_proposal)
 
-    return {'em2c': {'params': gm_to_params(em2c_proposal), 'kl': kl_vals, 'normconst': em2c_norm_const},
-            'emd': {'params': gm_to_params(emd_proposal), 'kl': kl_vals, 'normconst': emd_norm_const}}
+    return {'em2c': em2c_res, 'emd': emd_res}

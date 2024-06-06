@@ -1,4 +1,8 @@
 import jax.numpy as jnp
+import os
+import sys
+sys.path.append('/home/yjanati/projects/entropic_mirror_mc/')
+
 import jax
 from pathlib import Path
 from jax.lax import fori_loop
@@ -12,10 +16,11 @@ from jax import grad, vmap, default_device, devices, jit
 from jax.random import split, PRNGKey, normal, categorical
 from numpyro.distributions import MultivariateNormal, MixtureSameFamily, Categorical, MultivariateStudentT
 import matplotlib.pyplot as plt
-import os
-import sys
+
 from gmm_script import run_gmm
 import torch
+
+
 
 os.environ['PATH'] = '/usr/local/cuda-12.1/bin'
 os.environ['JAX_LOG_COMPILES'] = '1'
@@ -32,7 +37,7 @@ Path(save_folder).mkdir(exist_ok=True)
 
 with default_device(devices('gpu')[device]):
     key = PRNGKey(10)
-    dims_nsamples = [(2, 2000), (20, 2000), (100, 5000), (200, 10000)]
+    dims_nsamples = [(2, 2000), (20, 5000), (100, 10000), (200, 10000)]
 
     for dim in dims_nsamples:
         dim, n_samples = dim
