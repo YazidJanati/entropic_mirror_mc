@@ -1,0 +1,6 @@
+n_layers: 10
+n_hidden: 128
+n_samples: 10_000
+batch_size: 1024
+epochs: 5000
+lr: 1e-3
